@@ -11,6 +11,20 @@ body {
     border: 1px red dotted;
 }
 
+.card-width{
+  width: 33rem;
+}
+
+.submitLink {
+  background-color: transparent;
+  text-decoration: underline;
+  border: none;
+  cursor: pointer;
+}
+.submitLink:focus {
+  outline: none;
+}
+
 #sidenav {
     background-color: #2f4050;
     padding: 0px;

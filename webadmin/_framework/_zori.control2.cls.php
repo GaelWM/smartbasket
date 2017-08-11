@@ -316,7 +316,7 @@ abstract class ZoriControl2
             //case "placeholder": //dont render placeholder inside a control
 
             default:
-            $htmlAttr .= " $attr = $enqoute".qs($value)."$enqoute";
+            $htmlAttr .= " $attr = \"".qs($value)."\"";
          }
       }}
       return $htmlAttr;
@@ -938,6 +938,32 @@ class ZoriDatalistControl extends ZoriSelectControl //>> extends ZoriControl2
 
       $attr = self::renderAttributes($this->html);
 
+      if($this->html->cache != null)
+      {
+         $strCache = "cache: true,";
+      }
+
+      if($this->html->ajaxFunction != null)
+      {
+         $strAjaxFunction = $this->html->ajaxFunction.",";
+      }
+
+      if($this->html->minimumInputLength != null)
+      {
+         $strMinimumInputLength = "minimumInputLength: " .$this->html->minimumInputLength.",";
+      }
+
+      //default values
+      //documentation for ajax select: https://select2.github.io/examples.html#data-ajax
+      if($this->html->ajaxFunction != null)
+      {
+         //Make sure minimum length is atleast 2 if we have ajax
+         if($this->html->minimumInputLength == null)
+         {
+            $strMinimumInputLength = "minimumInputLength: 2,";
+         }
+      }
+
 //todo: figure out why placeholder is not showing
 
       $js = "
@@ -945,6 +971,9 @@ class ZoriDatalistControl extends ZoriSelectControl //>> extends ZoriControl2
          $(document).ready(function() {
 
             $('#$this->ID').select2({
+               $strMinimumInputLength
+               $strAjaxFunction
+               $strCache
                placeholder: '".$this->html->placeholder."',
                allowClear: ".$this->html->allowClear.",
                tags: true
@@ -992,7 +1021,9 @@ class ZoriSelectMultipleControl extends ZoriSelectControl
       if($this->html->allowClear==""){$this->html->allowClear="true";}
       if($this->html->maximumSelectionLength ==""){$this->html->maximumSelectionLength="3";}
 
+      
       $phpValue = explode(";", $this->VALUE);
+      $phpValue = array_filter($phpValue);
       $jsValue = json_encode($phpValue);
       $js = "
       <script>
@@ -1384,6 +1415,8 @@ class ZoriTimeControl extends ZoriControl2
       $this->html->id = $this->ID;
       $this->html->name = $this->Name;
       $this->html->class = "form-control";
+
+
 
       $attr = self::renderAttributes($this->html);
       $name_start = $attr->name."_start";

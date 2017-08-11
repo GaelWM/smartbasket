@@ -1,5 +1,5 @@
 <?php
-include_once("_zori.details.cls.php");
+include_once("_zori.details2.cls.php");
 
 class ZoriReport extends Zori
 {
@@ -108,7 +108,7 @@ class ZoriReport extends Zori
          <table class='tblBlank' style='margin: 0px;'>
          <tr>
             <td>
-               <table class='tblBlank'>
+               <table class='table-responsive'>
                   <tr>
                      <td><img src='images/extraimages/header/icon-48-module.png' height='44'></img></td>
                      <td style='padding: 16px;' nowrap><span class='textHeading'>Filters</span></td>

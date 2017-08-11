@@ -30,19 +30,40 @@
       case "Save":
       case "Edit":
       case "New":
-         $page = new ZoriDetails();
+         $page = new ZoriDetails(array("Details", "Security", "Profile Picture"));
          $page->AssimulateTable("tblShopper", $ShopperID, "strShopper");
          //print_rr($page->Fields);
+         $page->Fields["refTitleID"]->Tab =
+         $page->Fields["refShoppingListID"]->Tab =
+         $page->Fields["strShopper"]->Tab =
+         $page->Fields["strName"]->Tab =
+         $page->Fields["strSurname"]->Tab =
+         $page->Fields["strEmail"]->Tab =
+         $page->Fields["strTel"]->Tab =
+         $page->Fields["strCell"]->Tab =
+         $page->Fields["dtDateRegistered"]->Tab = 
+         $page->Fields["txtAddress"]->Tab = "Details";
 
+         $page->Fields["strPassword"]->Type = "password";
+         $page->Fields["strPassword"]->Tab = "Security";
+         $page->Fields["strPasswordConfirm"] = nCopy($page->Fields["strPassword"]);
+         $page->Fields["strPasswordConfirm"]->Label = "Confirm Password";
+         $page->Fields["strPasswordConfirm"]->COLUMN_NAME = "strPasswordConfirm";
+         $page->Fields["strPasswordConfirm"]->html->name = "strPasswordConfirm";
+         $page->Fields["strPasswordConfirm"]->html->id = "strPasswordConfirm";
+         $page->Fields["strPasswordConfirm"]->html->onchange = "if($('#strPassword').val() != $('#strPasswordConfirm').val() && $('#strPassword').val() != ''){ alert('Passwords do not match.');}";
+         $page->Fields["strPasswordConfirm"]->Order = 20;
+         $page->Fields["strPasswordConfirm"]->Tab ="Security";
+         
          ## ALL THE FIELDS UNDER Profile Picture TAB
-         $page->Fields["Profile:PicturePath"]->Label = "Profile Picture";
-         $page->Fields["Profile:PicturePath"]->Type="file";
-         $page->Fields["Profile:PicturePath"]->ID =
-         $page->Fields["Profile:PicturePath"]->Name = $ShopperID;
-         $page->Fields["Profile:PicturePath"]->ajaxFunction = "UploadProfilePicture";
-         $page->Fields["Profile:PicturePath"]->strPath = $page->SystemSettings["ProfileImageDirAdmin"];
-         $page->Fields["Profile:PicturePath"]->ajaxParams = "&ShopperID=". $ShopperID;
-         $page->Fields["strPassword"]->Type = "hidden";
+         $page->Fields["Profile:Picture"]->Label = "Profile Picture";
+         $page->Fields["Profile:Picture"]->Type="file";
+         $page->Fields["Profile:Picture"]->ID =
+         $page->Fields["Profile:Picture"]->Name = $ShopperID;
+         $page->Fields["Profile:Picture"]->ajaxFunction = "UploadProfilePicture";
+         $page->Fields["Profile:Picture"]->strPath = $page->SystemSettings["ProfileImageDirAdmin"];
+         $page->Fields["Profile:Picture"]->ajaxParams = "&ShopperID=". $ShopperID;
+         $page->Fields["Profile:Picture"]->Tab = "Profile Picture";
          
 
          $page->renderControls();

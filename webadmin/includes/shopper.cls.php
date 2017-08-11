@@ -44,7 +44,7 @@ class Shopper extends ZoriList
       $this->ListSQL("
          SELECT tblShopper.ShopperID, tblShopper.strShopper AS Shopper, tblShopper.strName AS Name
          , tblShopper.strSurname AS Surname, tblShopper.strEmail AS Email, tblShopper.strTel AS Tel
-         , tblShopper.strCell AS Cell, tblShopper.txtAddress AS Address, tblShopper.txtNotes AS Notes, tblShopper.dtDateRegistered AS 'Date Registered', tblShopper.blnActive AS Active
+         , tblShopper.dtDateRegistered AS 'Date Registered', tblShopper.blnActive AS Active
          , tblShopper.strLastUser AS 'Last User', tblShopper.dtLastEdit AS 'Last Edit'
          FROM tblShopper
          WHERE 1=1 $Where
@@ -59,27 +59,24 @@ class Shopper extends ZoriList
       global $xdb, $SystemSettings;
       $db = new ZoriDatabase("tblShopper", $ShopperID, null, 0);
 
-      print_rr($_POST);die("iugyiu");
-
       $db->SetValues($_POST);
       ## Save shopper profile pic.
-      // if($_FILES['Profile:PicturePath']['name'] != "" && $ShopperID != 0)
-      // {//current: cel_a/wa/_ need to go to cel_a/training/profilepictures/
-      //    chmod($_FILES['Profile:PicturePath']['tmp_name'] , 0777);
-      //    $strFileName = str_pad($ShopperID, 5,"0", STR_PAD_LEFT) ."_". $_FILES["Profile:PicturePath"]["name"];
+      if($_FILES['Profile:PicturePath']['name'] != "" && $ShopperID != 0)
+      {//current: cel_a/wa/_ need to go to cel_a/training/profilepictures/
+         chmod($_FILES['Profile:PicturePath']['tmp_name'] , 0777);
+         $strFileName = str_pad($ShopperID, 5,"0", STR_PAD_LEFT) ."_". $_FILES["Profile:PicturePath"]["name"];
 
-      //    $strPath = $SystemSettings[ProfileImageDirAdmin]; //$strPath = "../../profliepictures/";
-      //    //print_rr($strPath);
+         $strPath = $SystemSettings[ProfileImageDirAdmin]; //$strPath = "../../profliepictures/";
+         //print_rr($strPath);
 
-      //    $db->Fields["Profile:PicturePath"] = $strFileName;
+         $db->Fields["Profile:PicturePath"] = $strFileName;
 
-      //    move_uploaded_file($_FILES['Profile:PicturePath']['tmp_name'], $strPath . $strFileName);
+         move_uploaded_file($_FILES['Profile:PicturePath']['tmp_name'], $strPath . $strFileName);
 
-      // }
+      }
 
       $db->Fields[strPassword] = md5($_POST[strPassword]);
       $db->Fields[strLastUser] = $_SESSION[USER]->USERNAME;
-      print_rr($db->Fields);die("dfuihu");
 
       $result = $db->Save();
       if($ShopperID == 0) $ShopperID = $db->ID[ShopperID];
